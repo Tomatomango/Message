@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Will You Be My Quarantine?</title>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      height: 100vh;
+      background: radial-gradient(circle at top, #ffb6c1, #ff4d6d);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    /* Pages */
+    .page {
+      display: none;
+      text-align: center;
+      padding: 0 12px;
+      width: 100%;
+      max-width: 600px;
+      animation: fadeIn 0.8s ease forwards;
+    }
+    .page.active { display: block; }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+      text-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      font-weight: 400;
+      margin-bottom: 40px;
+      font-size: 1.5rem;
+    }
+
+    /* Buttons */
+    .buttons {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      align-items: center;
+      height: 160px;
+    }
+
+    button {
+      padding: 12px 35px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 40px;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      transition: transform 0.2s ease;
+    }
+
+    #yesBtn {
+      background: #fff;
+      color: #ff4d6d;
+      z-index: 2;
+    }
+
+    #yesBtn:hover { transform: scale(1.08); }
+
+    #noBtn {
+      position: absolute;
+      top: 70px;
+      left: 50%;
+      transform: translate(-50%, 0);
+      background: rgba(255,255,255,0.25);
+      color: #fff;
+      backdrop-filter: blur(5px);
+    }
+
+    /* Hearts */
+    .heart {
+      position: absolute;
+      bottom: -20px;
+      opacity: 0.8;
+      pointer-events: none;
+      animation: floatUp linear infinite;
+    }
+
+    @keyframes floatUp {
+      from { transform: translateY(0); opacity: 1; }
+      to { transform: translateY(-110vh); opacity: 0; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Page 2 Frame */
+    .frame {
+      width: 92%;
+      max-width: 520px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+      margin: 0 auto;
+    }
+
+    .frame h1 {
+      font-size: 2rem;
+      margin-bottom: 15px;
+    }
+
+    /* Base GIF style */
+    .gif {
+      display: block;
+      margin: 0 auto 15px;
+      height: auto;
+      border-radius: 15px;
+      
+    }
+
+    /* Main (big) GIF */
+    .gif-main {
+      width: 25%;
+      max-width: 480px;
+    }
+
+    /* Secondary (smaller) GIF */
+    .gif-secondary {
+      width: 90%;
+      max-width: 520px;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      h1 { font-size: 2rem; }
+      h2 { font-size: 1.2rem; }
+      .frame h1 { font-size: 1.6rem; }
+
+      .gif-main {
+        max-width: 25%;
+      }
+
+      .gif-secondary {
+        width: 100%;
+        max-width: 400px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- PAGE 1 -->
+  <div class="page active" id="page1">
+    <h1>Hey Angel☺️</h1>
+    <h2>Will you be my Quarantine?</h2>
+
+    <div class="buttons">
+      <button id="yesBtn">Yes 💖</button>
+      <button id="noBtn">No 🙈</button>
+    </div>
+  </div>
+
+  <!-- PAGE 2 -->
+  <div class="page" id="page2">
+    <div class="frame">
+      <h1>💗 This is for you 💗</h1>
+
+      <!-- Main GIF -->
+      <img src="Assets/love-bears.gif" alt="Romantic GIF" class="gif gif-main">
+
+      <!-- Secondary GIF -->
+      <img src="Assets/Msg.gif" alt="Message GIF" class="gif gif-secondary">
+    </div>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById('noBtn');
+    const yesBtn = document.getElementById('yesBtn');
+    const page1 = document.getElementById('page1');
+    const page2 = document.getElementById('page2');
+
+    // Smooth "No" button movement (no glitch)
+    noBtn.addEventListener('mouseenter', () => {
+      const container = document.querySelector('.buttons');
+      const rect = container.getBoundingClientRect();
+
+      const maxX = rect.width - noBtn.offsetWidth;
+      const x = Math.round(Math.random() * maxX - rect.width / 2);
+      const y = Math.round(Math.random() * 80);
+
+      noBtn.style.transform = `translate(${x}px, ${y}px)`;
+    });
+
+    // Yes click
+    yesBtn.addEventListener('click', () => {
+      page1.classList.remove('active');
+      page2.classList.add('active');
+      launchHearts(30);
+    });
+
+    // Hearts
+    function launchHearts(count) {
+      for (let i = 0; i < count; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.innerText = '❤';
+        heart.style.left = Math.round(Math.random() * 100) + 'vw';
+        heart.style.fontSize = (16 + Math.random() * 24) + 'px';
+        heart.style.animationDuration = (3 + Math.random() * 4) + 's';
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 7000);
+      }
+    }
+
+    setInterval(() => launchHearts(3), 900);
+  </script>
+
+</body>
+</html>
